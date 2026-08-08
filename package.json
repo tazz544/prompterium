@@ -1,6 +1,6 @@
 {
   "name": "prompterium",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cursor project skills, rules, hooks, and templates — sync catalog into .cursor/",
   "license": "MIT",
   "type": "module",
