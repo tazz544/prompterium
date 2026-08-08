@@ -1,0 +1,39 @@
+{
+  "name": "prompterium",
+  "version": "0.1.0",
+  "description": "Cursor project skills, rules, hooks, and templates — sync catalog into .cursor/",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "prompterium": "./bin/prompterium.js"
+  },
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./catalog/*": "./catalog/*"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "catalog",
+    "scripts/sync.sh"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "sync": "node bin/prompterium.js sync .",
+    "prepack": "node bin/prompterium.js sync --dry-run ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tazz544/Prompterium.git"
+  },
+  "keywords": [
+    "cursor",
+    "skills",
+    "prompts",
+    "agent",
+    "templates"
+  ]
+}
