@@ -1,17 +1,24 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const SUBTREES = ["skills", "rules", "commands", "templates"];
+const SUBTREES = ["skills", "rules", "commands", "templates"] as const;
 
-/**
- * @param {string} packageRoot - directory containing catalog/
- * @param {string} targetDir - app repository root
- * @param {{ dryRun?: boolean }} [options]
- */
-export async function syncCatalog(packageRoot, targetDir, options = {}) {
+export type SyncOptions = {
+  dryRun?: boolean;
+};
+
+export type SyncResult = {
+  dest: string;
+  copied: number;
+};
+
+export async function syncCatalog(
+  packageRoot: string,
+  targetDir: string,
+  options: SyncOptions = {},
+): Promise<SyncResult> {
   const dryRun = options.dryRun ?? false;
   const catalog = path.join(packageRoot, "catalog");
-  const dest = path.join(targetDir, ".cursor");
 
   try {
     await fs.access(catalog);
@@ -28,7 +35,7 @@ export async function syncCatalog(packageRoot, targetDir, options = {}) {
   const destResolved = path.join(targetDir, ".cursor");
 
   let copied = 0;
-  const log = (msg) => console.log(msg);
+  const log = (msg: string) => console.log(msg);
 
   for (const subtree of SUBTREES) {
     const src = path.join(catalog, subtree);
@@ -95,12 +102,12 @@ export async function syncCatalog(packageRoot, targetDir, options = {}) {
   return { dest: destResolved, copied };
 }
 
-/** @returns {string} absolute package root (contains catalog/) */
-export function resolvePackageRoot(fromDir) {
-  return path.resolve(fromDir, "..");
+/** Absolute package root (contains catalog/). */
+export function resolvePackageRoot(fromDir: string): string {
+  return path.resolve(fromDir, "../..");
 }
 
-async function dirHasEntries(dir) {
+async function dirHasEntries(dir: string): Promise<boolean> {
   try {
     const entries = await fs.readdir(dir);
     return entries.length > 0;
@@ -109,7 +116,7 @@ async function dirHasEntries(dir) {
   }
 }
 
-async function copyDirContents(src, dst) {
+async function copyDirContents(src: string, dst: string): Promise<void> {
   const entries = await fs.readdir(src, { withFileTypes: true });
   for (const ent of entries) {
     const from = path.join(src, ent.name);

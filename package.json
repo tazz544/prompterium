@@ -1,20 +1,23 @@
 {
   "name": "prompterium",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Cursor project skills, rules, hooks, and templates — sync catalog into .cursor/",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "prompterium": "./bin/prompterium.js"
+    "prompterium": "./dist/bin/prompterium.js"
   },
-  "main": "./lib/index.js",
+  "main": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
   "exports": {
-    ".": "./lib/index.js",
+    ".": {
+      "types": "./dist/lib/index.d.ts",
+      "import": "./dist/lib/index.js"
+    },
     "./catalog/*": "./catalog/*"
   },
   "files": [
-    "bin",
-    "lib",
+    "dist",
     "catalog",
     "scripts/sync.sh"
   ],
@@ -22,8 +25,16 @@
     "node": ">=18"
   },
   "scripts": {
-    "sync": "node bin/prompterium.js sync .",
-    "prepack": "node bin/prompterium.js sync --dry-run ."
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check",
+    "sync": "node dist/bin/prompterium.js sync .",
+    "prepare": "npm run build",
+    "prepack": "npm run build && node dist/bin/prompterium.js sync --dry-run ."
   },
   "repository": {
     "type": "git",
@@ -35,5 +46,13 @@
     "prompts",
     "agent",
     "templates"
-  ]
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^22.19.1",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
+  }
 }

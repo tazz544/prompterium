@@ -4,13 +4,13 @@ Central library for Cursor **project** context: agent skills, rules, hooks, and 
 
 ## What goes where
 
-| In Prompterium | After sync (in your app) | Loaded by Cursor? |
-|----------------|--------------------------|-------------------|
-| `catalog/skills/<name>/SKILL.md` | `.cursor/skills/<name>/` | Yes — agent skills |
-| `catalog/rules/*.mdc` | `.cursor/rules/` | Yes — rules |
-| `catalog/commands/*.md` | `.cursor/commands/` | Yes — slash commands (legacy) |
-| `catalog/hooks/hooks.json`, `catalog/hooks/*` | `.cursor/hooks.json`, `.cursor/hooks/` | Yes — hooks |
-| `catalog/templates/**` | `.cursor/templates/` | Only if referenced by a skill or rule |
+| In Prompterium                                | After sync (in your app)               | Loaded by Cursor?                     |
+| --------------------------------------------- | -------------------------------------- | ------------------------------------- |
+| `catalog/skills/<name>/SKILL.md`              | `.cursor/skills/<name>/`               | Yes — agent skills                    |
+| `catalog/rules/*.mdc`                         | `.cursor/rules/`                       | Yes — rules                           |
+| `catalog/commands/*.md`                       | `.cursor/commands/`                    | Yes — slash commands (legacy)         |
+| `catalog/hooks/hooks.json`, `catalog/hooks/*` | `.cursor/hooks.json`, `.cursor/hooks/` | Yes — hooks                           |
+| `catalog/templates/**`                        | `.cursor/templates/`                   | Only if referenced by a skill or rule |
 
 Do not copy anything into `~/.cursor/skills-cursor/` — that directory is managed by Cursor.
 
@@ -20,11 +20,20 @@ Docs: [Skills](https://cursor.com/docs/context/skills), [Rules](https://cursor.c
 
 ```
 catalog/          # source of truth (shared library)
-lib/              # sync implementation (Node)
-bin/prompterium.js
+src/              # TypeScript sync implementation
+dist/             # build output (generated; not committed)
 scripts/sync.sh   # optional bash sync (same catalog layout)
 package.json      # npm package
 AGENTS.md         # conventions for agents working in this repo
+```
+
+### Development
+
+```bash
+npm install
+npm run check      # typecheck + eslint + prettier
+npm run build      # compile src/ -> dist/
+npm run sync       # dry-run sync into this repo (requires build)
 ```
 
 See [catalog/README.md](catalog/README.md) for contribution conventions.
@@ -72,12 +81,14 @@ Bump the `prompterium` version in `package.json` when you want new skills or tem
 
 ### Publish to npm (maintainers)
 
-1. Log in: `npm login`
-2. If the name `prompterium` is taken, set a scoped name in `package.json`, e.g. `"name": "@your-scope/prompterium"`.
-3. Bump version: `npm version patch`
-4. Publish: `npm publish --access public` (required for scoped public packages)
+**Automated (recommended):** pushing a tag `v*` runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which creates a [GitHub Release](https://github.com/tazz544/Prompterium/releases) and publishes to npm with provenance (so the package can appear under the repo **Packages** section).
 
-The published tarball includes `catalog/`, `lib/`, and the `prompterium` CLI only—no postinstall hooks.
+1. In the GitHub repo: **Settings → Secrets and variables → Actions** → add `NPM_TOKEN` (npm granular token with publish), **or** on [npmjs.com](https://www.npmjs.com) configure **Trusted publishing** for this GitHub repo (then OIDC can replace the token).
+2. Bump and tag: `npm version patch` (creates commit + `v*` tag), then `git push origin main --tags`.
+
+**Manual:** `npm login`, bump `version`, `npm publish --access public` (use `--access public` for scoped names).
+
+The published tarball includes `catalog/`, compiled `dist/`, and the `prompterium` CLI only—no postinstall hooks.
 
 ## Quick start (git clone)
 

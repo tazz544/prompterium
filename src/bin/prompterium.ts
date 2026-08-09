@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { syncCatalog, resolvePackageRoot } from "../lib/sync.js";
+import { resolvePackageRoot, syncCatalog } from "../lib/sync.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolvePackageRoot(__dirname);
 
-function printHelp() {
+function printHelp(): void {
   console.log(`Usage: prompterium sync [options] [TARGET]
 
 Copy package catalog/ into TARGET/.cursor/ (additive; no delete).
@@ -24,14 +24,15 @@ Examples:
 `);
 }
 
-function parseArgs(argv) {
+type ParsedArgs = { command: "help" } | { command: "sync"; dryRun: boolean; target: string };
+
+function parseArgs(argv: string[]): ParsedArgs {
   const args = argv.slice(2);
-  let command = "sync";
   let dryRun = false;
   let target = process.cwd();
 
   if (args.length === 0) {
-    return { command, dryRun, target };
+    return { command: "sync", dryRun, target };
   }
 
   const first = args[0];
@@ -42,7 +43,7 @@ function parseArgs(argv) {
   if (first === "sync") {
     args.shift();
   } else if (first.startsWith("-")) {
-    command = "sync";
+    /* default sync command */
   } else if (first !== "sync") {
     console.error(`error: unknown command: ${first}`);
     printHelp();
@@ -63,10 +64,10 @@ function parseArgs(argv) {
     }
   }
 
-  return { command, dryRun, target: path.resolve(target) };
+  return { command: "sync", dryRun, target: path.resolve(target) };
 }
 
-async function main() {
+async function main(): Promise<void> {
   const parsed = parseArgs(process.argv);
 
   if (parsed.command === "help") {
