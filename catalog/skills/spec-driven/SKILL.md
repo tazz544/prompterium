@@ -7,7 +7,7 @@ description: >-
 
 # Spec Driven Development
 
-Feature specifications live in `docs/specs/<feature-name>/`. The `_template` folder sits directly under `docs/specs/`. Each spec folder contains:
+Feature specifications live in `docs/specs/<NNN-feature-name>/` (three-digit prefix + kebab-case slug, e.g. `001-implement-auth`). The `_template` folder sits directly under `docs/specs/`. Each spec folder contains:
 
 - `spec.md` - requirements, acceptance criteria, and a `Status` field.
 - `tasks.md` - ordered implementation checklist.
@@ -21,5 +21,5 @@ Prompterium templates for new specs (after sync): `.cursor/templates/spec.md` an
 3. When implementing a spec, work through `tasks.md` top to bottom. Mark each task `[x]` in the file immediately after completing and verifying it. Set `Status: In progress` when starting and `Status: Done` when all tasks and acceptance criteria are met.
 4. If implementation reveals that the spec is wrong or incomplete, stop, describe the conflict to the user, and update `spec.md` before continuing. Do not silently diverge from the spec.
 5. Record non-obvious implementation decisions in the `Notes / Decisions` section of `tasks.md`.
-6. When creating a new spec, copy `docs/specs/_template/` and follow its structure. Keep `spec.md` about the "what/why" and `tasks.md` about the "how".
+6. When creating a new spec, use the `NNN-feature-name` folder convention (`001-…`, `002-…`). Copy `docs/specs/_template/` and follow its structure. Keep `spec.md` about the "what/why" and `tasks.md` about the "how".
 7. Small bugfixes and trivial changes do not require a spec.

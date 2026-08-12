@@ -41,7 +41,12 @@ Write the result to `docs/specs/backlog.md`:
 - **Source** — what the input was and where it came from, in one line.
 - **Scope summary** — one paragraph on what the text is asking for, in your own words.
 - **Already covered** — items in the text that exist in the codebase today, with file references. Excluded from the backlog.
-- **Tasks** — a numbered table. For each: kebab-case name, one-line goal, dependencies (by number), rough size (S/M/L), and a short quote or pointer to the part of the input it came from.
+- **Tasks** — a numbered table in **recommended execution order**. For each row include:
+  - **Folder** — `NNN-kebab-case-title` (three-digit zero-padded prefix + kebab-case slug), e.g. `001-implement-auth`, `002-add-user-profile`. The prefix is the recommended sequence, not a backlog row number.
+  - **Goal** — one line.
+  - **Depends on** — folder name(s) of prerequisite task(s), or `—`.
+  - **Size** — S / M / L.
+  - **Source** — short quote or pointer to the part of the input it came from.
 - **Deferred / out of scope** — items too vague, too far out, or explicitly non-goals.
 - **Open questions** — anything that can't be turned into a testable requirement until the user answers something.
 
@@ -49,7 +54,7 @@ Every task must trace back to something in the input. If a task is your inferenc
 
 Sizing rule: one task is one coherent, verifiable slice — roughly what one person finishes in a few days, with a clear done condition. Split anything larger. Merge anything that can't be shipped or verified independently.
 
-Ordering rule: sort by dependency, then by what unblocks the most downstream work. State the reasoning in one line under the table.
+Ordering rule: sort by dependency, then by what unblocks the most downstream work. Assign `001`, `002`, `003`, … in that order — the three-digit prefix is the recommended implementation sequence. State the reasoning in one line under the table.
 
 ## 4. Stop and get approval
 
@@ -63,9 +68,9 @@ Ask explicitly:
 
 ## 5. Generate the approved specs
 
-For each item the user approves, follow the `spec-new` skill to create `docs/specs/<task-name>/`. Additionally:
+For each item the user approves, follow the `spec-new` skill to create `docs/specs/<NNN-task-name>/` (e.g. `docs/specs/001-implement-auth/`). Use the **Folder** name from the backlog row — do not renumber.
 
-- Add `Depends on: <task-name>` where the backlog records a dependency.
+- Add `Depends on: <NNN-task-name>` where the backlog records a dependency.
 - Keep requirements scoped to that item only. If writing the spec reveals it's actually two tasks, stop, say so, and update the backlog instead of writing an oversized spec.
 - Link each spec back to its backlog row, and mark the row with the spec path.
 

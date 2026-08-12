@@ -7,7 +7,7 @@ description: >-
 
 # Implement an approved feature spec
 
-Implement the feature spec indicated by the user (a folder in `docs/specs/`). If no spec was named, list available specs with their statuses and ask which one to implement.
+Implement the feature spec indicated by the user (a folder in `docs/specs/`, e.g. `001-implement-auth`). If no spec was named, list available spec folders (sorted by numeric prefix) with their statuses and ask which one to implement.
 
 1. Read `spec.md` and `tasks.md` fully before writing any code.
 2. Verify `Status` is `Approved` (or `In progress` for resumed work). If it is `Draft`, stop and ask the user to approve the spec first.
