@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { annotateSyncedContent, annotateSyncedTree } from "./generated-notice.js";
 
 const SUBTREES = ["skills", "rules", "commands", "templates"] as const;
 
@@ -72,8 +73,9 @@ export async function syncCatalog(
         const to = path.join(hooksDst, ent.name);
         if (ent.isDirectory()) {
           await fs.cp(from, to, { recursive: true });
+          await annotateSyncedTree(to);
         } else {
-          await fs.copyFile(from, to);
+          await copyFileWithNotice(from, to);
           if (ent.name.endsWith(".sh") || ent.name.endsWith(".bash")) {
             await fs.chmod(to, 0o755);
           }
@@ -84,7 +86,7 @@ export async function syncCatalog(
       const hooksJson = path.join(hooksSrc, "hooks.json");
       try {
         await fs.access(hooksJson);
-        await fs.copyFile(hooksJson, path.join(destResolved, "hooks.json"));
+        await copyFileWithNotice(hooksJson, path.join(destResolved, "hooks.json"));
         log("synced: catalog/hooks/hooks.json -> .cursor/hooks.json");
       } catch {
         /* optional */
@@ -125,7 +127,12 @@ async function copyDirContents(src: string, dst: string): Promise<void> {
       await fs.mkdir(to, { recursive: true });
       await copyDirContents(from, to);
     } else {
-      await fs.copyFile(from, to);
+      await copyFileWithNotice(from, to);
     }
   }
+}
+
+async function copyFileWithNotice(from: string, to: string): Promise<void> {
+  const content = await fs.readFile(from, "utf8");
+  await fs.writeFile(to, annotateSyncedContent(content, path.basename(from)), "utf8");
 }

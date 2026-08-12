@@ -162,5 +162,16 @@ fi
 if [[ $copied -eq 0 ]]; then
   echo "warning: nothing to sync (catalog subtrees are empty or missing)" >&2
 else
+  if [[ $DRY_RUN -eq 0 ]]; then
+    annotate_mod="$PROMPTERIUM_ROOT/dist/lib/generated-notice.js"
+    if [[ -f "$annotate_mod" ]]; then
+      (cd "$PROMPTERIUM_ROOT" && node --input-type=module -e "
+import { annotateSyncedTree } from './dist/lib/generated-notice.js';
+await annotateSyncedTree(process.argv[1]);
+" "$DEST")
+    else
+      echo "warning: run npm run build in Prompterium to add generated-file notices" >&2
+    fi
+  fi
   echo "done: $DEST"
 fi
