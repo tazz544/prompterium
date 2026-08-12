@@ -4,7 +4,7 @@ description: >-
   Split a complex piece of text — a project brief, RFC, email thread, meeting
   notes, README, epic description, client requirements, or anything else the
   user pastes or attaches — into an ordered backlog of individual, verifiable
-  tasks under docs/simulations-react/specs/. Do not implement code. Use this
+  tasks under docs/specs/. Do not implement code. Use this
   whenever the user wants a long or messy description broken into concrete work
   items, tasks, tickets, or specs — even if they don't say the word "spec".
 disable-model-invocation: true
@@ -36,7 +36,7 @@ Where the text states something as decided but does not say what it means concre
 
 ## 3. Draft the breakdown
 
-Write the result to `docs/simulations-react/specs/backlog.md`:
+Write the result to `docs/specs/backlog.md`:
 
 - **Source** — what the input was and where it came from, in one line.
 - **Scope summary** — one paragraph on what the text is asking for, in your own words.
@@ -63,7 +63,7 @@ Ask explicitly:
 
 ## 5. Generate the approved specs
 
-For each item the user approves, follow the `spec-new` skill to create `docs/simulations-react/specs/<task-name>/`. Additionally:
+For each item the user approves, follow the `spec-new` skill to create `docs/specs/<task-name>/`. Additionally:
 
 - Add `Depends on: <task-name>` where the backlog records a dependency.
 - Keep requirements scoped to that item only. If writing the spec reveals it's actually two tasks, stop, say so, and update the backlog instead of writing an oversized spec.

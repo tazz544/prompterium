@@ -1,13 +1,13 @@
 ---
 name: spec-implement
 description: >-
-  Implement an approved feature spec from docs/simulations-react/specs/. Use when
+  Implement an approved feature spec from docs/specs/. Use when
   the user asks to implement a named spec or continue spec-based feature work.
 ---
 
 # Implement an approved feature spec
 
-Implement the feature spec indicated by the user (a folder in `docs/simulations-react/specs/`). If no spec was named, list available specs with their statuses and ask which one to implement.
+Implement the feature spec indicated by the user (a folder in `docs/specs/`). If no spec was named, list available specs with their statuses and ask which one to implement.
 
 1. Read `spec.md` and `tasks.md` fully before writing any code.
 2. Verify `Status` is `Approved` (or `In progress` for resumed work). If it is `Draft`, stop and ask the user to approve the spec first.
